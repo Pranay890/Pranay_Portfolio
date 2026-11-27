@@ -18,7 +18,7 @@
       --raised: #ECE3D8;
       --ink: #1E1815;
       --ink-2: #5D514A;
-      --ink-3: #807269;
+      --ink-3: #71645C;
       --hairline: rgba(30, 24, 21, 0.08);
       --hairline-strong: rgba(30, 24, 21, 0.16);
 
@@ -396,36 +396,6 @@
 
     .btn-secondary:active { transform: scale(0.98); }
 
-    /* Bottom Hero Ledger */
-    .hero-ledger {
-      position: relative;
-      z-index: 2;
-      border-top: 1px solid var(--hairline);
-      background: rgba(var(--bg-rgb), 0.78);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-
-    .hero-ledger-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      padding-block: 16px;
-      flex-wrap: wrap;
-    }
-
-    .hl-item { display: inline-flex; align-items: baseline; gap: 8px; }
-    .hl-val {
-      font-family: var(--font-mono);
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--ink);
-      font-variant-numeric: tabular-nums;
-    }
-    .hl-val.is-accent { color: var(--accent); }
-    .hl-lbl { font-size: 13px; color: var(--ink-3); }
-
     .enter {
       opacity: 0;
       transform: translateY(12px);
@@ -620,6 +590,46 @@
     }
     .project-card .proj-h3 { font-size: 18px; }
     .project-card .proj-desc { font-size: 14px; margin-bottom: 16px; }
+
+    /* AI-assisted builds share the project section, outside its category filters. */
+    .ai-builds { margin-top: 76px; padding-top: 52px; border-top: 1px solid var(--hairline); scroll-margin-top: 100px; }
+    .ai-builds .sec-head { align-items: flex-start; }
+    .ai-intro { max-width: 470px; margin: 0; color: var(--ink-2); font-size: 16px; line-height: 1.65; }
+    .ai-builds-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+    .ai-build { min-width: 0; overflow: hidden; background: var(--card); border: 1px solid var(--hairline); border-radius: 16px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; }
+    .ai-build-visual { aspect-ratio: 16 / 10; overflow: hidden; background: var(--raised); border-bottom: 1px solid var(--hairline); }
+    .ai-build-visual img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 400ms var(--ease); }
+    .ai-build-visual.is-illustration { background: #F8F5EE; }
+    .ai-build-visual.is-illustration img { width: 90%; margin-inline: auto; }
+    .ai-build-visual.is-product { padding: 20px; display: flex; align-items: center; background: #e8edf0; }
+    .ai-build-visual.is-product img { height: 100%; object-fit: cover; object-position: top; border-radius: 6px; box-shadow: 0 12px 28px rgba(25, 31, 38, .12); }
+    .ai-build-body { padding: 28px; display: flex; flex: 1; flex-direction: column; }
+    .ai-build-body .proj-domain { font-size: 13px; }
+    .ai-build-body .proj-h3 { font-size: 26px; margin-bottom: 8px; }
+    .ai-build-subtitle { margin: 0 0 16px; color: var(--ink); font-size: 16px; font-weight: 500; }
+    .ai-build-body .proj-desc { font-size: 16px; }
+    .ai-build-body .tag { font-size: 13px; }
+    .ai-build-note { color: var(--ink-3); font-size: 14px; line-height: 1.6; margin: 0 0 20px; }
+    .ai-build-actions { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; margin-top: auto; padding-top: 20px; border-top: 1px solid var(--hairline); }
+    .ai-build-actions a { min-height: 44px; display: inline-flex; align-items: center; }
+    .ai-build-actions .link-muted { font-family: var(--font-sans); font-size: 14px; }
+    @media (hover: hover) {
+      .ai-build:hover .ai-build-visual img { transform: scale(1.02); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ai-build-visual img { transition: none; }
+      .ai-build:hover .ai-build-visual img { transform: none; }
+    }
+    @media (max-width: 960px) {
+      .ai-builds .sec-head { display: block; }
+      .ai-intro { margin-top: 20px; max-width: 620px; }
+    }
+    @media (max-width: 720px) {
+      .ai-builds { margin-top: 48px; padding-top: 36px; }
+      .ai-builds-grid { grid-template-columns: 1fr; }
+      .ai-build-body { padding: 24px; }
+      .ai-build-visual.is-product { padding: 14px; }
+    }
 
     /* ============================================================
        EXPERIENCE WITH DRAWING TERRACOTTA SPINE
@@ -907,14 +917,6 @@
         </div>
       </div>
 
-      <div class="hero-ledger enter enter-3">
-        <div class="container hero-ledger-inner">
-          <span class="hl-item"><span class="hl-val is-accent">10M+</span><span class="hl-lbl">ERP records validated at DAKSHABHI</span></span>
-          <span class="hl-item"><span class="hl-val">99.59%</span><span class="hl-lbl">Fraud detection accuracy (550K+ txns)</span></span>
-          <span class="hl-item"><span class="hl-val">8.0 / 10</span><span class="hl-lbl">B.Tech IT CGPA</span></span>
-          <span class="hl-item"><span class="hl-val">3× IBM</span><span class="hl-lbl">Verified certifications</span></span>
-        </div>
-      </div>
     </section>
 
     <!-- 2. FEATURED PROJECTS -->
@@ -935,6 +937,53 @@
         </div>
 
         <div id="projectsContainer"></div>
+
+        <section class="ai-builds" id="built-with-ai" aria-labelledby="aiBuildsTitle">
+          <div class="sec-head">
+            <div>
+              <span class="sec-label mono">AI-assisted development</span>
+              <h2 class="sec-title" id="aiBuildsTitle">Built with AI</h2>
+            </div>
+            <p class="ai-intro">Applications I built end-to-end with AI assistance, turning ideas into usable tools for healthcare information and cloud cost analysis.</p>
+          </div>
+
+          <div class="ai-builds-grid">
+            <article class="ai-build" aria-labelledby="diagnosenseTitle">
+              <div class="ai-build-visual is-illustration">
+                <img src="./assets/diagnosense-illustration.jpg" alt="Illustration of a medical cross with a heartbeat trace, document, and sound wave" width="864" height="1152" loading="lazy" decoding="async" />
+              </div>
+              <div class="ai-build-body">
+                <span class="proj-domain mono">Healthcare · Multimodal AI</span>
+                <h3 class="proj-h3" id="diagnosenseTitle">DiagnoSense</h3>
+                <p class="ai-build-subtitle">AI-powered healthcare assistant</p>
+                <p class="proj-desc">Explore symptoms in natural language and turn PDF or image-based medical reports into structured summaries. Gemini powers text reasoning and vision-based extraction in a Streamlit interface.</p>
+                <div class="tag-list"><span class="tag">Python</span><span class="tag">Streamlit</span><span class="tag">Gemini</span><span class="tag">PDF &amp; OCR</span><span class="tag">FAISS indexing</span></div>
+                <p class="ai-build-note">Educational prototype. Includes a separate medical-guideline indexing pipeline; retrieval integration is planned.</p>
+                <div class="ai-build-actions">
+                  <a class="btn-secondary" href="https://github.com/Pranay890/GenAI-Powered-Multimodal-Healthcare-Assistant-with-RAG" target="_blank" rel="noopener noreferrer" aria-label="View DiagnoSense on GitHub">View on GitHub</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="ai-build" aria-labelledby="finAnalysisTitle">
+              <div class="ai-build-visual is-product">
+                <img src="./assets/fin-analysis.png" alt="Fin-Analysis application overview showing its cloud cost intelligence interface" width="1440" height="1800" loading="lazy" decoding="async" />
+              </div>
+              <div class="ai-build-body">
+                <span class="proj-domain mono">FinOps · Web application</span>
+                <h3 class="proj-h3" id="finAnalysisTitle">Fin-Analysis</h3>
+                <p class="ai-build-subtitle">Cloud cost intelligence platform</p>
+                <p class="proj-desc">Turn AWS, Azure, and GCP billing CSVs into spend dashboards, anomaly alerts, and optimization recommendations. Investigate cost changes, generate AI-assisted insights, and export executive PDF reports.</p>
+                <div class="tag-list"><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Recharts</span><span class="tag">MongoDB</span><span class="tag">OpenAI / Gemini</span></div>
+                <p class="ai-build-note">Deployed on Vercel, with demo data and rules-based recommendations available without AI keys.</p>
+                <div class="ai-build-actions">
+                  <a class="btn-primary" href="https://cloud-cost-analysis-web-app.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="Open Fin-Analysis live app">Open live app</a>
+                  <a class="link-muted" href="https://github.com/Pranay890/cloud-cost-analysis-app" target="_blank" rel="noopener noreferrer" aria-label="View Fin-Analysis source code on GitHub">Source code</a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
       </div>
     </section>
 
