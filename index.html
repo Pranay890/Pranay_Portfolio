@@ -613,6 +613,10 @@
     .ai-build-actions { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; margin-top: auto; padding-top: 20px; border-top: 1px solid var(--hairline); }
     .ai-build-actions a { min-height: 44px; display: inline-flex; align-items: center; }
     .ai-build-actions .link-muted { font-family: var(--font-sans); font-size: 14px; }
+    .ai-build [hidden], .exp-box [hidden] { display: none !important; }
+    .studio-spine { transform: scaleY(1); }
+    .studio-role + .exp-box, .exp-box + .studio-role { margin-top: 20px; }
+    .studio-education-divider { padding-top: 16px; border-top: 1px solid var(--hairline); }
     @media (hover: hover) {
       .ai-build:hover .ai-build-visual img { transform: scale(1.02); }
     }
@@ -822,6 +826,10 @@
       .bench-fill { transform: scaleX(1) !important; }
     }
 
+    @media (min-width: 961px) {
+      .projects-subgrid[data-columns="1"] { grid-template-columns: 1fr; }
+      .projects-subgrid[data-columns="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
     @media (max-width: 960px) {
       .lead-project, .projects-subgrid, .exp-box, .edu-cert-grid, .skills-grid, .contact-panel { grid-template-columns: 1fr; }
       .exp-meta-col { padding-right: 0; padding-bottom: 24px; border-right: none; border-bottom: 1px solid var(--hairline); }
@@ -1251,6 +1259,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <script src="/portfolio-content.js"></script>
   <script>
     (function () {
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1391,7 +1400,7 @@
       window.addEventListener('scroll', handleScroll, { passive: true });
 
       // 6. Projects Data + Animated Benchmark Count-Up
-      const PROJECTS = [
+      let PROJECTS = [
         {
           id: 'fraud',
           group: 'aiml',
@@ -1508,7 +1517,7 @@
       }
 
       function renderProjects(filter) {
-        const list = filter === 'all' ? PROJECTS : PROJECTS.filter(function (p) { return p.group === filter; });
+        const list = PROJECTS.filter(function (p) { return p.visible !== false && (filter === 'all' || p.group === filter); }).map(safeProject);
         const leadItem = list.find(function (p) { return p.lead; });
         const others = list.filter(function (p) { return p !== leadItem; });
 
@@ -1524,7 +1533,7 @@
                 metricStripHtml(leadItem.metrics) +
                 '<div class="card-actions">' +
                   '<button type="button" class="link-accent" data-case="' + leadItem.id + '">Read case study →</button>' +
-                  '<a href="' + leadItem.github + '" target="_blank" rel="noopener noreferrer" class="link-muted">GitHub ↗</a>' +
+                  (leadItem.github ? '<a href="' + leadItem.github + '" target="_blank" rel="noopener noreferrer" class="link-muted">GitHub ↗</a>' : '') +
                 '</div>' +
               '</div>' +
               '<div class="benchmark-panel">' +
@@ -1541,8 +1550,7 @@
         }
 
         if (others.length) {
-          const cols = others.length === 1 ? '1fr' : (others.length === 2 ? 'repeat(2, minmax(0, 1fr))' : '');
-          html += '<div class="projects-subgrid"' + (cols ? ' style="grid-template-columns:' + cols + '"' : '') + '>';
+          html += '<div class="projects-subgrid" data-columns="' + Math.min(others.length, 3) + '">';
           html += others.map(function (p, i) {
             return (
               '<article class="project-card sheen-card" style="animation-delay:' + (i * 75) + 'ms">' +
@@ -1556,7 +1564,7 @@
                   metricStripHtml(p.metrics) +
                   '<div class="card-actions">' +
                     '<button type="button" class="link-accent" data-case="' + p.id + '">Read case study →</button>' +
-                    '<a href="' + p.github + '" target="_blank" rel="noopener noreferrer" class="link-muted">GitHub ↗</a>' +
+                    (p.github ? '<a href="' + p.github + '" target="_blank" rel="noopener noreferrer" class="link-muted">GitHub ↗</a>' : '') +
                   '</div>' +
                 '</div>' +
               '</article>'
@@ -1569,7 +1577,7 @@
         container.querySelectorAll('[data-case]').forEach(function (btn) {
           btn.addEventListener('click', function () {
             const p = PROJECTS.find(function (x) { return x.id === btn.getAttribute('data-case'); });
-            if (p) openModal(p);
+            if (p) openModal(safeProject(p));
           });
         });
         bindSheen(container);
@@ -1605,14 +1613,14 @@
       const modalClose = document.getElementById('modalClose');
 
       function openModal(p) {
-        modalMeta.textContent = p.domain;
-        modalTitle.textContent = p.title;
+        modalMeta.textContent = p.raw.domain;
+        modalTitle.textContent = p.raw.title;
         modalBody.innerHTML =
           '<h4>Problem</h4><p>' + p.problem + '</p>' +
           '<h4>Architecture and methodology</h4><p>' + p.architecture + '</p>' +
           '<h4>Impact</h4><p>' + p.impact + '</p>' +
           '<h4>Stack</h4><div class="tag-list" style="margin-top:8px;">' + p.stack.map(function (s) { return '<span class="tag">' + s + '</span>'; }).join('') + '</div>' +
-          '<div style="margin-top:20px;"><a href="' + p.github + '" target="_blank" rel="noopener noreferrer" class="btn-primary">View repository on GitHub ↗</a></div>';
+          (p.github ? '<div style="margin-top:20px;"><a href="' + p.github + '" target="_blank" rel="noopener noreferrer" class="btn-primary">View repository on GitHub ↗</a></div>' : '');
         modal.classList.add('is-open');
         modal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
@@ -1626,6 +1634,30 @@
       modalClose.addEventListener('click', closeModal);
       modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal(); });
+
+      function escapeHtml(value) {
+        return String(value ?? '').replace(/[&<>"']/g, function (char) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char];
+        });
+      }
+      function safeProject(project) {
+        const p = { ...project, raw: project };
+        for (const key of ['id', 'title', 'domain', 'desc', 'problem', 'architecture', 'impact']) p[key] = escapeHtml(p[key]);
+        p.github = escapeHtml(window.portfolioContent.safeUrl(project.github));
+        p.stack = (p.stack || []).map(escapeHtml);
+        p.metrics = (p.metrics || []).map(m => ({ val: escapeHtml(m.val), lbl: escapeHtml(m.lbl), accent: m.accent }));
+        return p;
+      }
+      window.portfolioProjects = {
+        read: () => structuredClone(PROJECTS),
+        write(projects) {
+          PROJECTS = structuredClone(projects);
+          filterTabs[0].textContent = 'All (' + PROJECTS.filter(p => p.visible !== false).length + ')';
+          const active = filterTabs.find(tab => tab.classList.contains('is-active')) || filterTabs[0];
+          movePill(filterPill, active);
+          renderProjects(active.dataset.filter);
+        }
+      };
 
       // 8. Smooth Scroll Reveals + Lenis + GSAP Timeline Spine
       const reveals = document.querySelectorAll('.reveal');
@@ -1666,5 +1698,6 @@
       });
     })();
   </script>
+  <script src="/portfolio-page.js"></script>
 </body>
 </html>

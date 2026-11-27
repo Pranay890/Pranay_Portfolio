@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Portfolio Studio · Pranay Patil</title>
+  <link rel="stylesheet" href="/studio.css">
+  <script src="/portfolio-content.js" defer></script>
+  <script src="/studio.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/studio"><span aria-hidden="true">P</span> Portfolio Studio</a>
+    <div class="header-actions">
+      <a href="/" target="_blank" rel="noopener">View portfolio</a>
+      <button id="sign-out" type="button" class="quiet" hidden>Sign out</button>
+    </div>
+  </header>
+  <main>
+    <section id="login" class="login">
+      <h1>Sign in to your studio</h1>
+      <p>Use your portfolio editor account to manage what appears on the public site.</p>
+      <form id="login-form">
+        <label>Email <input name="email" type="email" autocomplete="username" required></label>
+        <label>Password <input name="password" type="password" autocomplete="current-password" required></label>
+        <button class="primary" type="submit">Sign in</button>
+      </form>
+    </section>
+    <div id="workspace" class="workspace" hidden>
+      <nav id="sections" class="sections" aria-label="Portfolio sections"></nav>
+      <section class="editor" aria-labelledby="editor-title">
+        <h1 id="editor-title"></h1>
+        <div id="editor-body"></div>
+        <footer class="publish-bar">
+          <span id="change-state">Loading content…</span>
+          <div>
+            <button id="save-draft" type="button" class="quiet">Save draft</button>
+            <button id="publish" type="button" class="primary">Publish changes</button>
+          </div>
+        </footer>
+      </section>
+      <details class="preview" id="preview-panel" open>
+        <summary>Live preview</summary>
+        <iframe id="preview" title="Preview of your portfolio edits"></iframe>
+      </details>
+    </div>
+  </main>
+  <p id="notice" class="notice" role="status" aria-live="polite" hidden></p>
+</body>
+</html>
