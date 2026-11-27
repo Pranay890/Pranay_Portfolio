@@ -749,6 +749,8 @@
     .contact-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 44px; padding: 0 16px; border-radius: 8px; background: var(--card); border: 1px solid var(--hairline); font-size: 14px; font-weight: 500; color: var(--ink); transition: border-color 180ms var(--ease), transform 140ms var(--ease); }
     .contact-row:active { transform: scale(0.99); }
     .footer-bar { margin-top: 32px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--ink-3); }
+    .footer-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 24px; }
+    .footer-actions > a { min-height: 44px; display: inline-flex; align-items: center; }
 
     /* Case Study Modal */
     .modal-bg {
@@ -1232,7 +1234,10 @@
 
         <div class="footer-bar">
           <span>Pranay Bansilal Patil · Shirpur and Pune, India</span>
-          <a href="#overview" class="link-muted">Back to top ↑</a>
+          <div class="footer-actions">
+            <a href="#overview" class="link-muted">Back to top ↑</a>
+            <a href="/studio" class="btn-secondary" target="_blank" rel="noopener noreferrer" aria-label="Portfolio Studio (opens in a new tab)">Portfolio Studio</a>
+          </div>
         </div>
       </div>
     </section>
