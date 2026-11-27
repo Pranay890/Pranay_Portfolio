@@ -1,0 +1,44 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "instrument sans",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-26T16:37:14.731Z",
+        "reason": "Agent decision: preserve the existing portfolio typography for this bounded addition; user requested keeping the existing projects."
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-26T16:37:16.634Z",
+        "reason": "Agent decision: existing Limestone and Terracotta branding is documented in README.md and visible on the live portfolio; this task extends that design."
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-26T16:37:18.525Z",
+        "reason": "Agent review: reported section wrappers at projects, education, and skills use 84px vertical padding (56px mobile), with nested .container providing 32px horizontal gutters (20px mobile). The wrapper-only finding misses the nested inset; desktop and mobile project screenshots confirm spacing."
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "studio.html"
+        ],
+        "createdAt": "2026-11-27T14:59:25.087Z",
+        "reason": "The studio uses the same limestone background as the portfolio so the editor and preview share the established Limestone and Terracotta palette."
+      }
+    ]
+  }
+}
